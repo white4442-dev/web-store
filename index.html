@@ -193,7 +193,7 @@
       document.querySelector('.loading').style.display = 'none';
     }, 5000);
 
-    fetch('https://raw.githubusercontent.com/white4442-dev/anjay12/main/produk.json')
+    fetch('https://raw.githubusercontent.com/white4442-dev/anjay12/main/produk.json?t=' + new Date().getTime())
       .then(res => res.json())
       .then(data => {
         const list = document.getElementById('produk-list');
