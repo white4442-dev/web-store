@@ -1,0 +1,230 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Store</title>
+  <style>
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+      background: #000;
+      color: #00f0ff;
+      overflow: hidden;
+    }
+    .loading {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      animation: fadeOut 1s ease 4s forwards;
+    }
+    .loading img {
+      width: 200px;
+      animation: pulse 1s infinite;
+    }
+    @keyframes fadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    .menu, .produk, .info {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      overflow-y: auto;
+      animation: fadeIn 1s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .active { display: flex; }
+    .led-text {
+      color: #00f0ff;
+      text-shadow: 0 0 5px #00f0ff, 0 0 10px #00f0ff;
+      animation: glitch 2s infinite;
+    }
+    .led-red {
+      color: red;
+      text-shadow: 0 0 5px red, 0 0 10px red;
+      animation: glitch 2s infinite;
+    }
+    @keyframes glitch {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .btn {
+      background: #000;
+      color: #00f0ff;
+      border: 2px solid gold;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px gold;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+      text-decoration: none;
+    }
+    .btn:hover {
+      background: gold;
+      color: #000;
+    }
+    .circle {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: red;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 20px red;
+      margin-bottom: 20px;
+    }
+    .circle img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+    }
+    .back-btn {
+      margin-top: 30px;
+    }
+    .panel-box {
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+      text-align: center;
+      max-width: 90vw;
+    }
+    .panel-box.info-panel {
+      width: 95vw;
+    }
+    .panel-box.produk-panel {
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .web-panel-text {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>  <!-- Loading -->  <div class="loading">
+    <img src="https://files.catbox.moe/es95cv.jpg" alt="Loading">
+    <h2 class="led-text">LOADING</h2>
+  </div>  <!-- Menu Utama -->  <div class="menu active" id="menu">
+    <div class="web-panel-text led-red">WEB PANEL</div>
+    <div class="circle"><img src="https://files.catbox.moe/es95cv.jpg"></div>
+    <div class="panel-box">
+      <h1 class="led-text" style="margin-bottom: 20px;">WEB STORE</h1>
+      <button class="btn" onclick="showPage('produk')">📦 Produk</button>
+      <button class="btn" onclick="showPage('info')">ℹ️ Info</button>
+    </div>
+  </div>  <!-- Menu Produk -->  <div class="produk" id="produk">
+    <div class="panel-box produk-panel">
+    <div class="circle"><img src="https://files.catbox.moe/es95cv.jpg"></div>
+      <h2 class="led-text">DAFTAR PRODUK</h2>
+      <div id="produk-list" class="led-red">Memuat produk...</div>
+      <button class="btn back-btn" onclick="goBack()">🔙 Kembali</button>
+    </div>
+  </div>  <!-- Menu Info -->  <div class="info" id="info">
+   <div class="circle">
+  <img src="https://files.catbox.moe/es95cv.jpg">
+</div>
+
+<div class="panel-box info-panel">
+  <h2 class="led-text">INFO</h2>
+
+  <!-- Tambahkan jarak dengan margin -->
+  <h3 class="led-red" style="margin-bottom: 15px;">anjay</h3>
+
+  <!-- Tombol Contact Owner -->
+  <a href="https://t.me/Jalalstr_real" target="_blank"
+     class="btn"
+     style="font-size: 14px; padding: 8px 16px; display: inline-block; margin-bottom: 12px;">
+    📩 Contact Owner
+  </a>
+
+  <!-- Tombol Back -->
+  <button class="btn back-btn"
+          onclick="goBack()"
+          style="display: inline-block;">
+    🔙 Kembali
+  </button>
+</div>
+  </div>  <!-- Musik --><audio id="music" src="https://example-files.online-convert.com/audio/mp3/example.mp3"></audio>
+
+  <script>
+    const music = document.getElementById('music');
+
+    function showPage(page) {
+      document.querySelectorAll('.menu, .produk, .info').forEach(p => p.classList.remove('active'));
+      setTimeout(() => {
+        document.getElementById(page).classList.add('active');
+        music.play();
+      }, 500);
+    }
+
+    function goBack() {
+      document.querySelectorAll('.produk, .info').forEach(p => p.classList.remove('active'));
+      setTimeout(() => {
+        document.getElementById('menu').classList.add('active');
+        music.pause();
+        music.currentTime = 0;
+      }, 3000);
+    }
+
+    setTimeout(() => {
+      document.querySelector('.loading').style.display = 'none';
+    }, 5000);
+
+    fetch('https://raw.githubusercontent.com/white4442-dev/anjay12/main/produk.json')
+      .then(res => res.json())
+      .then(data => {
+        const list = document.getElementById('produk-list');
+        list.innerHTML = '';
+        data.forEach(item => {
+          const el = document.createElement('div');
+          el.innerHTML = `<div style="border:1px solid #00f0ff; padding:10px; margin:10px;">
+            <h3 class="led-text">${item.nama}</h3>
+            <p>${item.deskripsi}</p>
+            <button class="btn" onclick="window.location.href='https://t.me/Jalalstr_real?start=buy_${item.id}'">Beli</button>
+          </div>`;
+          list.appendChild(el);
+        });
+      });
+
+    // Efek salju ❄️
+    let snowInterval = setInterval(() => {
+      let snow = document.createElement('div');
+      snow.innerHTML = '❄️';
+      snow.style.position = 'fixed';
+      snow.style.top = '-20px';
+      snow.style.left = Math.random() * 100 + 'vw';
+      snow.style.fontSize = Math.random() * 10 + 10 + 'px';
+      snow.style.opacity = 0.7;
+      snow.style.animation = 'fall 10s linear forwards';
+      document.body.appendChild(snow);
+      setTimeout(() => snow.remove(), 10000);
+    }, 200);
+
+    const style = document.createElement('style');
+    style.innerHTML = `@keyframes fall { to { transform: translateY(100vh); opacity: 0; } }`;
+    document.head.appendChild(style);
+  </script></body>
+</html>
